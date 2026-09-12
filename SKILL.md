@@ -1,6 +1,6 @@
 ---
 name: english-song-interactive-worksheet
-version: 2.3.0
+version: 2.4.0
 author: hsinyuchi (Sylvia)
 license: CC BY-NC-SA 4.0
 description: >-
@@ -8,7 +8,8 @@ description: >-
   由 hsinyuchi (Sylvia) 針對臺灣高中職 A1~A2 英語課堂與 108 課綱學習歷程檔案優化設計。
   具備 10 題行內三選一聽力填空 (含辨音干擾項)、單字語音朗讀 (TTS)、高頻搭配詞與句型解析、
   1~5 星推薦滑桿、動態遊戲化回饋特效 (Confetti/氣球/震動/下雨)、
-  A1~A2 友善鷹架句型引導 (Sentence Starters)、頁尾總結算按鈕與收錄完整反思之學習歷程成果認證卡。
+  Count on Me 旗艦標準之雙語鷹架句型引導 (Sentence Starters + 英中對照範例)、
+  頁尾總結算按鈕與收錄完整反思之學習歷程成果認證卡。
   嚴格規範 YouTube 影片必須為英文字幕或無字幕（零中文字幕）、落實教育合理使用版權聲明、
   歌曲賞析採用「面向高中職生之青年共鳴對話口吻＋歌手超狂大獎戰績」，以及標準化 Cloudflare Pages 批次自動部署機制。
 ---
@@ -31,10 +32,10 @@ description: >-
   3. **句型文法解析**（大考核心句型 + 造句）
   4. **聽懂這首歌：青春共鳴與背後寓意**（歌手檔案與超狂戰績 + 面向學生的對話式賞析）
   5. **深度雙語歌詞賞析**（雙語歌詞 + 意境導讀）
-  6. **自我反思問答**（1~5 星推薦滑桿 + 句型開頭引導）
+  6. **學生自我反思與推薦問答**（Count on Me 黃金標準：Sentence Starters ＋ 英中對照範例）
   7. **🔚 頁尾總結算按鈕**：
      - **「結算成績並領取成果認證卡」大按鈕必須位於網頁最底部 (Footer)**，讓學生在完整填寫反思問卷後才進行結算。
-     - 點擊時若學生尚未填寫反思，系統會貼心提醒，確保產出之認證卡具備實質學習歷程價值。
+     - 點擊時若學生尚未填寫反思，系統會貼心彈出確認視窗，提醒學生填寫以確保認證卡具備實質學習歷程價值。
 
 ### 2. 題數與計分規範
 - 固定設計 **10 題** 關鍵聽力挖空，每題 10 分，滿分 **100 分**，直觀銜接平時課堂形成性評量。
@@ -90,22 +91,70 @@ description: >-
      - **創作背景**：介紹這首歌是在什麼真實故事或情境下誕生的（如飛機上的靈感錄音、電影中向摯友告別的承諾、重拾童年動漫熱愛的純真）。
      - **深層寓意與青春課題**：深刻扣合高中職學生切身面對的心靈課題（面對升學與考試焦慮時的心理重開機、遭遇同儕排擠或網路酸民時的自信建立、自我認同與生涯迷惘、化解人際偏見的包容力、劃清健康情感界線，以及真誠友誼的陪伴力量）。
 
-### 7. 單字庫朗讀發音按鈕 (Web Speech API TTS)
+### 7. 學生自我反思之「Count on Me 旗艦黃金規範」(Scaffolded Reflection with Bilingual Starters)
+- **設計哲學**：全面貫徹《Count on Me》所樹立之教學標竿，消除高中職（A1~A2）學生的英語寫作焦慮，讓每位學生都能充滿成就感地寫出有深度的學習歷程心得。
+- **標準三問結構**：
+  1. **Q1: Song Rating（1~5 星動態推薦滑桿）**：
+     - 欄位 ID：`id="rating-slider"`，連動 `id="rating-badge"`。
+     - 拖曳即時觸發 `updateRatingDisplay(this.value)`，提供生動情境文字反饋：
+       - `5 星`：⭐⭐⭐⭐⭐ (5/5) 絕世神曲！不聽後悔
+       - `4 星`：⭐⭐⭐⭐☆ (4/5) 旋律超棒，非常值得推薦
+       - `3 星`：⭐⭐⭐☆☆ (3/5) 節奏輕快，感覺還不錯
+       - `2 星`：⭐⭐☆☆☆ (2/5) 普普通通，不是我的菜
+       - `1 星`：⭐☆☆☆☆ (1/5) 不太有共鳴
+  2. **Q2: Why do you give this rating?（推薦理由與聽覺感受）**：
+     - 欄位 ID：`id="student-reason"`。
+     - **必備獨立雙語鷹架方塊 (Scaffolding Box)**：
+       ```html
+       <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3 mb-2 text-xs text-slate-600">
+         <span class="font-bold text-amber-800">💡 Sentence Starter (你可以這樣開頭)：</span>
+         <div class="mt-1.5 space-y-1 font-mono text-[11px]">
+           <p>• <strong>I like this song because...</strong> (我喜歡這首歌，因為...)</p>
+           <p>• <strong>The melody is... and it makes me feel...</strong> (旋律很...，讓我覺得...)</p>
+           <p class="text-slate-500 pt-0.5">📝 Example: <span class="text-slate-700 italic">"I like this song because the melody is warm and sweet."</span> (我喜歡這首歌，因為旋律很溫暖甜蜜。)</p>
+         </div>
+       </div>
+       ```
+     - 欄位 placeholder 提供英中雙語參考句。
+  3. **Q3: Which lyric line touched you the most? What did you learn?（歌詞打動處與核心啟發）**：
+     - 欄位 ID：`id="student-quote"`。
+     - **必備獨立雙語鷹架方塊 (Scaffolding Box)**：
+       ```html
+       <div class="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3 mb-2 text-xs text-slate-600">
+         <span class="font-bold text-indigo-800">💡 Sentence Starter (你可以這樣開頭)：</span>
+         <div class="mt-1.5 space-y-1 font-mono text-[11px]">
+           <p>• <strong>My favorite line is "..." because...</strong> (我最喜歡這句歌詞，因為...)</p>
+           <p>• <strong>From this song, I learned that...</strong> (從這首歌中，我學到...)</p>
+           <p class="text-slate-500 pt-0.5">📝 Example: <span class="text-slate-700 italic">"..."</span> (...)</p>
+         </div>
+       </div>
+       ```
+     - 欄位 placeholder 提供英中雙語參考句。
+- **結算前漏填貼心提醒機制 (Pre-Submission Reflection Guard)**：
+  - 結算函式 `grandSubmitChallenge()` 啟動時，若 `student-reason` 與 `student-quote` 皆為空，必須跳出友善 `confirm()` 提醒：
+    ```javascript
+    const sReason = document.getElementById('student-reason').value.trim();
+    const sQuote = document.getElementById('student-quote').value.trim();
+    if (!sReason && !sQuote) {
+      const skipReflection = confirm("💡 貼心提醒：您尚未填寫最後的「學習反思問答」！\n若未填寫，成果認證卡將會缺少學習歷程的反思文字。\n\n確定要直接結算領取小卡嗎？（按「取消」可回去填寫）");
+      if (!skipReflection) {
+        const refSec = document.getElementById('reflection-section');
+        if (refSec) refSec.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('student-reason').focus();
+        return;
+      }
+    }
+    ```
+
+### 8. 單字庫朗讀發音按鈕 (Web Speech API TTS)
 - 每個重點單字與常用搭配詞旁均內建 **「🔊 朗讀」** 按鈕，使用瀏覽器原生 Web Speech API (`en-US`) 免費即時發音，無須依賴外部付費音訊 API。
 
-### 8. 遊戲化動態特效 (Gamified Visual Feedback)
+### 9. 遊戲化動態特效 (Gamified Visual Feedback)
 - 引用 `canvas-confetti` 庫，根據結算成績觸發 4 級動態視覺特效：
   - **80 ~ 100 分**：魔杖星光 🧙‍♀️✨ + 雙側全彩 Confetti 彩帶噴發。
   - **60 ~ 79 分**：熱氣球升空飄浮動畫 🎈☁️。
   - **40 ~ 59 分**：畫面搖晃警告 (Screen Shake) 😬🧹。
   - **40 分以下**：全螢幕灰階降濾鏡 + 逼真雨滴落下動畫 🌧️。
-
-### 9. 反思問卷之「英主中輔」與鷹架句型引導 (Scaffolded Reflection for A1-A2)
-- **雙語友善原則**：題目以**「英文為主、繁中為輔」**呈現，並明文標註：`💡 Feel free to answer in English or Chinese! (歡迎用英文或中文作答，寫出真實想法最重要！)`，消除學生對英語寫作的焦慮。
-- **提供句型開頭引導 (Sentence Starters) 與簡單雙語範例**：
-  - 題目一：**Song Rating (1~5 星推薦滑桿)**，即時連動五星圖示與短評。
-  - 題目二：**Why do you give this rating?** 附帶模板：`I like this song because...` / `The melody is...`，並提供簡易英中範例。
-  - 題目三：**Which lyric line touched you the most? What did you learn?** 附帶模板：`My favorite line is "..." because...` / `From this song, I learned that...`。
 
 ### 10. 108 課綱專屬：學習歷程數位成果認證卡 (Certificate of Achievement)
 - 免去手動指導老師簽名欄位。
@@ -134,7 +183,7 @@ description: >-
    - 以「面向高中職生」的對話式熱血共鳴語調撰寫（嚴禁教案說教口吻）。
    - 整合【歌手檔案與超狂大獎戰績卡】（葛萊美、奧斯卡、告示牌紀錄）與【青春共感與背後寓意短文】。
 4. **深度意境賞析與雙語歌詞 (Song Appreciation & Lyrics)**：文化情意導讀、全曲完整中英對照歌詞。
-5. **反思問卷 (Student Reflection with Sentence Starters)**：英主中輔提示語、允許中英自由作答、1~5 星推薦滑桿與句型開頭引導。
+5. **學生自我反思問答 (Count on Me 規格)**：包含 1~5 星滑桿與動態短評、Q2 與 Q3 獨立雙語鷹架方塊（Sentence Starters ＋ 英中對照範例）。
 
 ---
 
@@ -149,8 +198,8 @@ description: >-
    - 套用防遮擋 CSS：`.lyric-line.active-line`（`z-index: 500`）與 `.cloze-blank.has-popover`（`z-index: 1000 !important`）。
 4. **單字語音與句型賞析區塊**。
 5. **聽懂這首歌：青年共鳴與背後寓意區塊**（歌手超狂戰績卡 + 對話式短文）。
-6. **反思問卷區塊**：1~5 星滑桿 + 句型開頭鷹架。
-7. **頁尾 Grand Submit 區塊**：大卡片包裝之結算按鈕，觸發 Confetti / 氣球 / 震動 / 灰階下雨。
+6. **學生反思問答區塊**：標準 Count on Me 鷹架模組（滑桿、雙語開頭引導、雙語範例、`student-reason`、`student-quote`）。
+7. **頁尾 Grand Submit 區塊**：大卡片包裝之結算按鈕，具備漏填提醒，觸發 Confetti / 氣球 / 震動 / 灰階下雨。
 8. **學習歷程認證卡 Modal 與 PNG 匯出**：生成包含完整反思問答之雙語認證卡，一鍵匯出圖檔。
 9. **頁尾教育版權聲明**：載明非商業教學用途與版權歸屬。
 

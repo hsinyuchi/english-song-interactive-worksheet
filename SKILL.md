@@ -1,16 +1,16 @@
 ---
 name: english-song-interactive-worksheet
-version: 2.6.0
+version: 2.9.0
 author: hsinyuchi (Sylvia)
 license: CC BY-NC-SA 4.0
 description: >-
   打造專屬教師風格的「英語歌曲互動網頁版學習單」(Interactive English Song Worksheet Pro)。
   由 hsinyuchi (Sylvia) 針對臺灣高中職 A1~A2 英語課堂與 108 課綱學習歷程檔案優化設計。
-  具備 10 題行內三選一聽力填空 (含辨音干擾項)、全曲完整中英歌詞無缺漏、單字語音朗讀 (TTS)、高頻搭配詞與句型解析、
+  具備 10 題行內三選一聽力填空 (含辨音干擾項)、音訊轉錄稿 100% 依序對齊與全曲完整中英歌詞無缺漏、單字語音朗讀 (TTS)、高頻搭配詞與句型解析、
   1~5 星推薦滑桿、動態遊戲化回饋特效 (Confetti/氣球/震動/下雨)、
-  Count on Me 旗艦標準之雙語鷹架句型引導 (Sentence Starters + 英中對照範例)、
-  自然教學動線（歌曲賞析置於反思前提供情意輸入）、純淨化親切成果小卡（絕無教師名與官方誇大機構標籤），
-  以及標準化 Cloudflare Pages 批次自動部署機制。
+  Count on Me 黃金母版標準之雙語鷹架句型引導 (Sentence Starters + 英中對照範例)、
+  自然教學動線（歌曲賞析置於反思前提供情意輸入）、純淨化親切成果小卡（絕無教師名與官方誇大機構標籤）、
+  無編號與具備純前端即時搜尋過濾且按首字母 (A-Z) 排列之總覽 Hub，以及標準化 Cloudflare Pages 批次自動部署機制。
 ---
 
 # 🎧 英語歌曲互動網頁版學習單製作技能 (English Song Worksheet Pro)
@@ -36,8 +36,11 @@ description: >-
      - **「結算成績並領取成果認證卡」大按鈕必須位於網頁最底部 (Footer)**，讓學生在完整填寫反思問卷後才進行結算。
      - 點擊時若學生尚未填寫反思，系統會貼心彈出確認視窗，提醒學生填寫以確保認證卡具備實質學習歷程價值。
 
-### 2. 題數、計分規範與「全曲完整歌詞」原則 (Full Lyrics & Blank Integrity)
+### 2. 題數、計分規範與「全曲完整歌詞與轉錄稿依序對齊」原則 (Full Lyrics & Transcript Integrity)
 - **滿分 100 分之 10 題挖空**：固定設計剛好 **10 題** 關鍵聽力挖空，每題 10 分，滿分 **100 分**，直觀銜接平時課堂形成性評量。
+- 🎙️ **音訊轉錄稿 100% 依序對齊（絕不可缺行、跳行或順序錯亂）**：
+  - 學生在課堂進行聽力挑戰時，是**緊盯著網頁歌詞跟著音訊秒數與旋律同步對照**。如果歌詞中途遺漏了短句、重複呼喊或合唱過渡段（例如：`Speechless!`、`'Cause I`、`Let the storm in`、`So come on and try` 等），學生會**瞬間失去定位、抓不到唱到哪裡**，造成極度嚴重的挫折感與課堂混亂！
+  - **嚴格規範**：歌詞清單必須**完整依照音訊影片的真實時間軸 (Audio Transcript / Timeline)，逐句逐行依序列出**，絕不可主觀刪減短句、不可整併跳行、亦不可套用非當前播放版本的歌詞。
 - 📜 **全曲完整歌詞無缺漏保證 (Full Unabridged Lyrics)**：
   - 網頁必須完整收錄全曲所有段落（主歌 Verses、副歌 Chorus、過渡 Pre-Chorus、橋段 Bridge、尾奏 Outro 及合唱/對唱段落）。
   - **嚴禁只保留 10 句挖空題目而刪去其餘歌詞**！其餘未挖空的歌詞行需完整呈現雙語英中對照，讓學生能一邊聆聽音樂一邊跟讀理解全貌。
@@ -204,18 +207,24 @@ description: >-
 ### Step 3: 高質感 HTML5 互動網頁開發 (單檔純前端)
 技術堆疊：`HTML5` + `Tailwind CSS (CDN)` + `Vanilla JavaScript` + `html2canvas (CDN)` + `canvas-confetti (CDN)`。
 
-#### 網頁必備核心模組：
-1. **Header 導覽與計時器**：歌曲標題、主題副標、自動跳動作答計時器（`00:00`）。
+#### 網頁核心模組與「Count on Me 黃金母版規範」(Gold Master Standard)：
+所有後續曲目開發，**架構、模組順序、DOM ID 與動態邏輯必須 100% 嚴格完全參照《Count on Me》旗艦母版**，僅可置換代表主題色系（如 Amber ➜ Purple ➜ Teal）與教材內容，確保品質一致且零回歸錯誤。
+
+1. **Header 導覽與右上角鎖定計時器 (Timer Locked Top-Right)**：
+   - 包含課堂延伸主題徽章、歌曲大標題與副標。
+   - **計時器卡片鎖定右上角**：Header 內部採用 `flex items-center justify-between`，文字區設 `flex-1 min-w-0 pr-2`，計時器卡片設 `flex-shrink-0 min-w-[120px]`，確保在任何螢幕解析度或長標題下皆鎖定在右上角，絕不折行沉底！
 2. **YouTube 播放視窗 (含防版權跳轉備援按鈕)**：右上角必備 `▶️ 若無法直接播放，點此開啟 YouTube 觀看`。
-3. **10 題歌詞挖空與行內三選一 Popover**：
-   - 點擊空格彈出 3 個按鈕，單手操作，支援進度條。聽力區提供「即時對答案」按鈕。
-   - 套用防遮擋 CSS：`.lyric-line.active-line`（`z-index: 500`）與 `.cloze-blank.has-popover`（`z-index: 1000 !important`）。
-4. **單字語音與句型賞析區塊**。
-5. **聽懂這首歌：青年共鳴與背後寓意區塊**（歌手超狂戰績卡 + 對話式短文）。
-6. **學生反思問答區塊**：標準 Count on Me 鷹架模組（滑桿、雙語開頭引導、雙語範例、`student-reason`、`student-quote`）。
-7. **頁尾 Grand Submit 區塊**：大卡片包裝之結算按鈕，具備漏填提醒，觸發 Confetti / 氣球 / 震動 / 灰階下雨。
-8. **學習歷程認證卡 Modal 與 PNG 匯出**：生成包含完整反思問答之雙語認證卡，一鍵匯出圖檔。
-9. **頁尾教育版權聲明**：載明非商業教學用途與版權歸屬。
+3. **聽力測驗區 (`#quiz-area`) 與黏性進度條 (Sticky Progress Bar)**：
+   - 頂部懸浮吸頂進度條：含 `🎵 聽力三選一 (10 題，每題 10 分)`、即時進度文字 `#progress-text` (`0/10`)、雙色漸層進度條 `#progress-bar`。
+   - 點擊空格彈出 3 個辨音選項，單手作答，套用防遮擋 CSS：`.lyric-line.active-line`（`z-index: 500`）與 `.cloze-blank.has-popover`（`z-index: 1000 !important`）。
+   - 聽力區底部配置兩大快捷操作鈕：`✅ 即時對答案 (Check Answers)`（呼叫 `checkAnswersOnly()`）與 `⬇️ 繼續往下學習與填寫反思`（錨點平滑跳轉至 `#reflection-section`）。
+4. **單字深究區 (Vocabulary Study)**：5 大重點單字片語，內建 🔊 Web Speech API 原生真人發音。
+5. **高中核心句型解析 (Target Sentence Patterns)**：2 大高頻大考句型公式、歌詞示範與升學造句。
+6. **聽懂這首歌：青年共鳴與背後寓意區塊**（歌手超狂戰績卡 + 對話式短文）。
+7. **學生自我反思問答區 (`#reflection-section`)**：標準 Count on Me 雙語鷹架模組（1~5 星滑桿、雙語 Sentence Starters、雙語範例、`student-reason`、`student-quote`）。
+8. **頁尾 Grand Submit 區塊**：大卡片包裝之結算按鈕，內建「漏填反思貼心防呆守門員 (Reflection Guard)」，觸發 Confetti / 氣球 / 震動 / 灰階下雨 4 級遊戲化反饋。
+9. **學習歷程認證卡 Modal 與 PNG 匯出**：生成純淨化雙語認證卡（100% 屬於學生個人成就、無教師名與官方生硬機構標籤），支援 `html2canvas` 一鍵匯出 PNG。
+10. **頁尾教育版權聲明**：載明非商業教學用途與版權歸屬。
 
 ---
 
@@ -224,9 +233,15 @@ description: >-
 1. **單檔與離線包產出**：
    - 產出單一完整 HTML（如 `Taylor_Swift_Shake_It_Off_網頁學習單.html`）。
    - 自動打包對應之 `_site.zip` 離線與部署壓縮檔。
-2. **總覽 Hub 入口升級**：
-   - 總覽 Hub 頂部具備完整版權聲明。
-   - 每首卡片皆提供三大行動按鈕：
+2. **總覽 Hub 入口升級與首字母排序 (Alphabetical Order A-Z)**：
+   - **首字母排序規則 (A-Z)**：總覽 Hub 中所有歌曲卡片，一律依「歌曲英文名稱首字母」自然排列（例如 Attention ➜ Count on Me ➜ Perfect Strangers），便於直覺檢索與管理。
+   - **版權專注與去贅詞**：總覽 Hub 頂部橫幅聚焦教育版權聲明與合理使用原則，嚴禁浮誇宣傳贅句。
+   - **無編號原則 (No Index Numbers)**：卡片頂部標籤一律改用「精選推薦」或「CEFR 等級/主題」，**絕不使用 FLAGSHIP 01/02 或流水號編號**，標題與橫幅亦不限制歌曲數量。
+   - **即時純前端搜尋列 (Search & Filter Bar)**：
+     - 位於 Header 與卡片之間，提供輸入框即時搜尋曲名、歌手、主題關鍵字與 CEFR 等級（分詞搜尋）。
+     - 具備清除按鈕、動態計數徽章（如「顯示 2 / 3 首歌曲」）、熱門分類標籤快速切換。
+     - 當無匹配結果時，顯示優雅的「查無符合歌曲」提示方塊與重設按鈕。
+   - **三合一行動按鈕**：每首卡片皆提供三大按鈕：
      - `🚀 線上互動版`：直連專屬 Cloudflare Pages 網址。
      - `💻 單機版`：本機離線瀏覽。
      - `📦 Zip`：下載部署包。

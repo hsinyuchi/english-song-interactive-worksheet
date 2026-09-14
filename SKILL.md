@@ -1,12 +1,13 @@
 ---
 name: english-song-interactive-worksheet
-version: 2.9.0
+version: 3.0.0
 author: hsinyuchi (Sylvia)
 license: CC BY-NC-SA 4.0
 description: >-
   打造專屬教師風格的「英語歌曲互動網頁版學習單」(Interactive English Song Worksheet Pro)。
   由 hsinyuchi (Sylvia) 針對臺灣高中職 A1~A2 英語課堂與 108 課綱學習歷程檔案優化設計。
-  具備 10 題行內三選一聽力填空 (含辨音干擾項)、音訊轉錄稿 100% 依序對齊與全曲完整中英歌詞無缺漏、單字語音朗讀 (TTS)、高頻搭配詞與句型解析、
+  具備 10 題行內三選一聽力填空 (含辨音干擾項)、音訊轉錄稿 100% 依序對齊與全曲完整中英歌詞無缺漏（嚴禁截斷或刪減副歌/尾奏/短句）、
+  校園普級與兒少安全影音審查標準（嚴禁裸露或性暗示畫面）、單字語音朗讀 (TTS)、高頻搭配詞與句型解析、
   1~5 星推薦滑桿、動態遊戲化回饋特效 (Confetti/氣球/震動/下雨)、
   Count on Me 黃金母版標準之雙語鷹架句型引導 (Sentence Starters + 英中對照範例)、
   自然教學動線（歌曲賞析置於反思前提供情意輸入）、純淨化親切成果小卡（絕無教師名與官方誇大機構標籤）、
@@ -38,12 +39,17 @@ description: >-
 
 ### 2. 題數、計分規範與「全曲完整歌詞與轉錄稿依序對齊」原則 (Full Lyrics & Transcript Integrity)
 - **滿分 100 分之 10 題挖空**：固定設計剛好 **10 題** 關鍵聽力挖空，每題 10 分，滿分 **100 分**，直觀銜接平時課堂形成性評量。
-- 🎙️ **音訊轉錄稿 100% 依序對齊（絕不可缺行、跳行或順序錯亂）**：
-  - 學生在課堂進行聽力挑戰時，是**緊盯著網頁歌詞跟著音訊秒數與旋律同步對照**。如果歌詞中途遺漏了短句、重複呼喊或合唱過渡段（例如：`Speechless!`、`'Cause I`、`Let the storm in`、`So come on and try` 等），學生會**瞬間失去定位、抓不到唱到哪裡**，造成極度嚴重的挫折感與課堂混亂！
-  - **嚴格規範**：歌詞清單必須**完整依照音訊影片的真實時間軸 (Audio Transcript / Timeline)，逐句逐行依序列出**，絕不可主觀刪減短句、不可整併跳行、亦不可套用非當前播放版本的歌詞。
-- 📜 **全曲完整歌詞無缺漏保證 (Full Unabridged Lyrics)**：
-  - 網頁必須完整收錄全曲所有段落（主歌 Verses、副歌 Chorus、過渡 Pre-Chorus、橋段 Bridge、尾奏 Outro 及合唱/對唱段落）。
-  - **嚴禁只保留 10 句挖空題目而刪去其餘歌詞**！其餘未挖空的歌詞行需完整呈現雙語英中對照，讓學生能一邊聆聽音樂一邊跟讀理解全貌。
+- 🎙️ **全曲完整歌詞無缺漏是絕對鐵律 (Absolute Red Line: 100% Unabridged Lyrics)**：
+  - 學生在課堂進行聽力挑戰時，是**雙眼緊盯著網頁歌詞、耳朵跟著音訊秒數與旋律同步對照**。一旦歌詞中途缺行、腰斬或省略，學生會**瞬間失去定位、抓不到唱到哪裡**，引發極度嚴重的課堂挫折感與混亂！
+  - ⚠️ **常見致命錯誤（絕對嚴禁犯下！）**：
+    1. ❌ **禁止半途腰斬**：只做了前兩段主歌與第一次副歌，Bridge、後續重複副歌（Chorus 2、Chorus 3）以及結尾尾奏（Outro）就直接消失或省略！
+    2. ❌ **禁止使用縮寫略過**：嚴禁只寫 `(Repeat Chorus)`、`[Chorus]` 或 `(Chorus & Outro)` 帶過！所有重複唱出的副歌每一句都必須完整雙語展開。
+    3. ❌ **禁止漏掉短句與襯詞**：轉折短句、伴唱呼應、合唱呼喊（如 `'Cause I`、`What are you doin'?`、`Oh, yeah` 等）必須忠實依照時間軸依序呈現。
+    4. ❌ **禁止只列挖空題**：其餘未挖空的 20~30 行歌詞行也必須完整列出雙語英中對照，讓學生跟讀全曲無死角。
+  - ✅ **正確標準流程**：
+    - 產出學習單前，必須透過 LRCLIB 或官方轉錄稿取得全曲 **逐句時間軸 (Full Synced Transcript)**。
+    - 包含：前奏 Intro ➜ 主歌 Verse 1 ➜ 過渡 Pre-Chorus 1 ➜ 副歌 Chorus 1 ➜ 主歌 Verse 2 ➜ 過渡 Pre-Chorus 2 ➜ 副歌 Chorus 2 ➜ 橋段 Bridge ➜ 過渡 Pre-Chorus 3 ➜ 副歌 Chorus 3 ➜ 尾奏 Outro。
+    - 從 **0:00 唱到最後一秒收尾**，逐行依序排列，每一句均附標準繁體中文意譯。
 - 🛡️ **括號防衝突語法安全守則 (Bracket Syntax Safety)**：
   - 只有**真正要被挖空的 10 個英文單字**才允許使用半形中括號標註（如：`[peculiar]`）。
   - 歌詞中的**角色名稱、合唱註記、說話者標籤**（如 Galinda、Elphaba、Students、Both），**嚴禁使用中括號 `[Galinda]`**，一律改用圓括號 `(Galinda)` 或全形括號 `【格琳達】`！
@@ -61,10 +67,13 @@ description: >-
     ```
   - 支援智慧翻轉（接近視窗底部時向上彈出 `.pop-up` 與指引小三角箭頭），確保上下相鄰挖空絕不互相覆蓋。
 
-### 4. YouTube 影片選用：動態畫面首選、播放相容性與字幕審查標準（極重要！）
-- 🎬 **第一優先挑選「有動態演出/電影畫面」之影片 (Dynamic Moving Visuals Priority)**：
-  - 首選官方電影片段 (Official Movie Clip)、官方劇情 MV (Official Music Video)、或具備生動動畫/豐富分鏡之動態歌詞版 (Official Animated Lyric Video)。
+### 4. YouTube 影片選用：動態畫面首選、兒少安全普級與純淨字幕審查標準（極重要！）
+- 🎬 **第一優先挑選「有動態演出/動態歌詞」之影片 (Dynamic Moving Visuals Priority)**：
+  - 首選官方電影片段 (Official Movie Clip)、官方劇情 MV (Official Music Video)、或具備生動動畫/高品質排版之動態歌詞版 (Official / High-Quality Dynamic Lyric Video)。
   - **嚴格禁止使用從頭到尾只有一張靜態專輯封面、靜止圖片之音訊影片 (Static Album Art)**！高中職學生高度重視視覺臨場感，靜止畫面容易導致注意力渙散與沉悶。
+- 🔞 **校園普級與兒少安全審查原則 (Classroom-Safe / Child-Friendly Standards)**：
+  - 高中職教室為公開教學場合，影片投影於全班大螢幕，**嚴禁使用含有過度暴露、穿著過少（如清涼內衣/泳裝）、性暗示、挑逗動作或血腥暴力之影片**！
+  - 若原曲官方 MV 含有兒少不宜或具爭議之畫面（例如 Charlie Puth 的《Attention》官方 MV 含有女主角過度暴露與情慾挑逗畫面），**嚴禁使用該官方 MV**，必須替換為**高畫質純動態歌詞版 (Clean Dynamic Lyric Video)** 或純淨得體的現場演出 (Live Lounge / Acoustic Session)。
 - **全面檢測嵌入權限**：必須使用允許外部網頁 `iframe` 嵌入之影片（選定前需透過 YouTube oEmbed API 驗證 `status: 200`，絕不可使用 404 失效、私人未公開或被版權方禁止外嵌之 ID）。
 - **字幕要求極致純淨（英文字幕或無字幕，絕對禁止中文字幕）**：
   - 首選官方純英文字幕、官方無字幕音訊或官方原版 MV。

@@ -1,16 +1,18 @@
 ---
 name: english-song-interactive-worksheet
-version: 3.0.0
+version: 3.2.0
 author: hsinyuchi (Sylvia)
 license: CC BY-NC-SA 4.0
 description: >-
   打造專屬教師風格的「英語歌曲互動網頁版學習單」(Interactive English Song Worksheet Pro)。
   由 hsinyuchi (Sylvia) 針對臺灣高中職 A1~A2 英語課堂與 108 課綱學習歷程檔案優化設計。
   具備 10 題行內三選一聽力填空 (含辨音干擾項)、音訊轉錄稿 100% 依序對齊與全曲完整中英歌詞無缺漏（嚴禁截斷或刪減副歌/尾奏/短句）、
+  縮寫單引號與選項字串安全規範（Apostrophe Safety，杜絕選對判錯 Bug）、
   校園普級與兒少安全影音審查標準（嚴禁裸露或性暗示畫面）、單字語音朗讀 (TTS)、高頻搭配詞與句型解析、
   1~5 星推薦滑桿、動態遊戲化回饋特效 (Confetti/氣球/震動/下雨)、
   Count on Me 黃金母版標準之雙語鷹架句型引導 (Sentence Starters + 英中對照範例)、
   自然教學動線（歌曲賞析置於反思前提供情意輸入）、純淨化親切成果小卡（絕無教師名與官方誇大機構標籤）、
+  100% 免疫 Google Sites 與 iframe 沙箱封鎖架構（零原生 alert/confirm、秒級 html2canvas 渲染、長按/右鍵雙重存圖防護）、
   無編號與具備純前端即時搜尋過濾且按首字母 (A-Z) 排列之總覽 Hub，以及標準化 Cloudflare Pages 批次自動部署機制。
 ---
 
@@ -66,6 +68,24 @@ description: >-
     .cloze-blank.has-popover { z-index: 1000 !important; }
     ```
   - 支援智慧翻轉（接近視窗底部時向上彈出 `.pop-up` 與指引小三角箭頭），確保上下相鄰挖空絕不互相覆蓋。
+- 🛡️ **英文縮寫單引號與選項字串安全規範 (Apostrophe & Options Safety)**：
+  - **常見致命錯誤**：西洋流行歌詞高頻出現縮寫單引號（Apostrophe，如 `gettin' over`、`don't`、`you're`、`it's`）。若在將選項傳遞至 DOM 時使用 `opts.map(o => o.replace(/'/g, "\\'"))`，HTML 屬性 `data-options="..."` 內的反斜線 `\` 不會被瀏覽器消除，導致取出選項時變成 `"gettin\' over"`，與正解 `"gettin' over"` 進行嚴格比對時會**永遠判定為 false（學生選對卻被判錯打 ✗）**！
+  - ✅ **標準防呆解法**：
+    1. **選項存入 DOM 時改用管道符號 `|` 分隔，嚴禁反斜線轉義**：
+       ```javascript
+       const optsList = line.options || [];
+       data-options="${optsList.join('|')}"
+       ```
+    2. **彈出選單解析時支援還原純淨文字**：
+       ```javascript
+       const options = optionsStr.includes('|') ? optionsStr.split('|') : optionsStr.split(',');
+       ```
+    3. **核對答案時採去除首尾空白之安全比對**：
+       ```javascript
+       if (userAns && correct && userAns.trim() === correct.trim()) {
+         // 正確！
+       }
+       ```
 
 ### 4. YouTube 影片選用：動態畫面首選、兒少安全普級與純淨字幕審查標準（極重要！）
 - 🎬 **第一優先挑選「有動態演出/動態歌詞」之影片 (Dynamic Moving Visuals Priority)**：
@@ -153,18 +173,28 @@ description: >-
        ```
      - 欄位 placeholder 提供英中雙語參考句。
 - **結算前漏填貼心提醒機制 (Pre-Submission Reflection Guard)**：
-  - 結算函式 `grandSubmitChallenge()` 啟動時，若 `student-reason` 與 `student-quote` 皆為空，必須跳出友善 `confirm()` 提醒：
+  - 結算函式啟動時，若 `student-reason` 與 `student-quote` 皆為空，**嚴禁使用瀏覽器原生 `confirm()`**（在 Google Sites 沙箱會被靜默阻斷），必須呼叫純前端自製確認窗 `showCustomConfirm()` 提醒：
     ```javascript
-    const sReason = document.getElementById('student-reason').value.trim();
-    const sQuote = document.getElementById('student-quote').value.trim();
-    if (!sReason && !sQuote) {
-      const skipReflection = confirm("💡 貼心提醒：您尚未填寫最後的「學習反思問答」！\n若未填寫，成果認證卡將會缺少學習歷程的反思文字。\n\n確定要直接結算領取小卡嗎？（按「取消」可回去填寫）");
-      if (!skipReflection) {
-        const refSec = document.getElementById('reflection-section');
-        if (refSec) refSec.scrollIntoView({ behavior: 'smooth' });
-        document.getElementById('student-reason').focus();
+    function checkReflectionAndProceed() {
+      const sReason = document.getElementById('student-reason').value.trim();
+      const sQuote = document.getElementById('student-quote').value.trim();
+      if (!sReason && !sQuote) {
+        showCustomConfirm({
+          title: "學習反思尚未填寫",
+          message: "💡 貼心提醒：您尚未填寫最後的「學習反思問答」！\n若未填寫，成果認證卡將會缺少學習歷程的反思文字。\n\n確定要直接結算領取小卡嗎？",
+          icon: "📝",
+          confirmText: "直接結算",
+          cancelText: "回去填寫",
+          onConfirm: () => finalizeSubmission(),
+          onCancel: () => {
+            const refSec = document.getElementById('reflection-section');
+            if (refSec) refSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('student-reason').focus();
+          }
+        });
         return;
       }
+      finalizeSubmission();
     }
     ```
 
@@ -226,6 +256,7 @@ description: >-
 3. **聽力測驗區 (`#quiz-area`) 與黏性進度條 (Sticky Progress Bar)**：
    - 頂部懸浮吸頂進度條：含 `🎵 聽力三選一 (10 題，每題 10 分)`、即時進度文字 `#progress-text` (`0/10`)、雙色漸層進度條 `#progress-bar`。
    - 點擊空格彈出 3 個辨音選項，單手作答，套用防遮擋 CSS：`.lyric-line.active-line`（`z-index: 500`）與 `.cloze-blank.has-popover`（`z-index: 1000 !important`）。
+   - **選項屬性與比對安全**：`data-options` 一律採 `optsList.join('|')` 傳遞，嚴禁反斜線轉義 `\'`；比對答案統一使用 `userAns.trim() === correct.trim()`，防止英文縮寫單引號（如 `gettin' over`、`don't`）比對失效。
    - 聽力區底部配置兩大快捷操作鈕：`✅ 即時對答案 (Check Answers)`（呼叫 `checkAnswersOnly()`）與 `⬇️ 繼續往下學習與填寫反思`（錨點平滑跳轉至 `#reflection-section`）。
 4. **單字深究區 (Vocabulary Study)**：5 大重點單字片語，內建 🔊 Web Speech API 原生真人發音。
 5. **高中核心句型解析 (Target Sentence Patterns)**：2 大高頻大考句型公式、歌詞示範與升學造句。
@@ -234,6 +265,21 @@ description: >-
 8. **頁尾 Grand Submit 區塊**：大卡片包裝之結算按鈕，內建「漏填反思貼心防呆守門員 (Reflection Guard)」，觸發 Confetti / 氣球 / 震動 / 灰階下雨 4 級遊戲化反饋。
 9. **學習歷程認證卡 Modal 與 PNG 匯出**：生成純淨化雙語認證卡（100% 屬於學生個人成就、無教師名與官方生硬機構標籤），支援 `html2canvas` 一鍵匯出 PNG。
 10. **頁尾教育版權聲明**：載明非商業教學用途與版權歸屬。
+11. 🛡️ **Google Sites 與 iframe 沙箱 100% 相容鐵律 (Google Sites & Sandbox Safe)**：
+    - 🚫 **零原生彈跳視窗（Zero Native Dialogs）**：
+      - **絕對嚴禁使用任何 `window.alert()` 與 `window.confirm()`**！
+      - *原因*：Google Sites、Canva、Notion 或各大校園 LMS 內嵌皆為 `<iframe>` 沙箱環境。在未設置 `allow-modals` 的情況下，瀏覽器安全政策會直接封鎖原生對話框並阻斷 JS 執行，造成「點擊結算毫無反應」的致命 Bug！
+      - *解法*：頁面內必須統一配備自製純前端對話框容器 `#custom-dialog-modal`，以 `showCustomAlert()` 與 `showCustomConfirm()` 處理所有確認與提示。
+    - ⚡ **html2canvas 效能與防跨域超時規範**：
+      - 參數必須配置 `imageTimeout: 1200`、`useCORS: true`、`allowTaint: true`、`logging: false`，避免卡在 Google Fonts 等外部跨域資源下載，保證在 1～2 秒內秒級完成卡片繪製。
+    - ⏳ **即時 Loading 動態回饋**：
+      - 點擊「生成 / 下載認證卡」按鈕時，必須立即將按鈕設為 disabled、加入 Spinner 旋轉動畫，並更新按鈕文字為「⏳ 正在生成認證卡圖片 (約需 1~2 秒)...」，徹底消除重複點擊與等待焦慮。
+    - 📱 **Google Sites / 行動裝置雙重保險存圖機制**：
+      - 沙箱環境經常封鎖 `<a download>` 的自動觸發下載。因此圖片生成後，**必須同時將高解析 PNG 渲染為 `<img>` 顯示於彈窗下方**（`#cert-image-preview-wrapper`），並標明：
+        - 💻 電腦用戶：若未自動下載，可「按右鍵 ➜ 另存影像」或點擊「在新分頁檢視大圖」。
+        - 📱 手機/平板用戶：直接「長按圖片 ➜ 儲存影像」。
+    - 🎯 **長頁面 iframe 彈窗視野置中與關閉**：
+      - 彈窗打開時必須執行 `modal.scrollIntoView({ behavior: 'smooth', block: 'center' })`，確保在 Google Sites 等超長 iframe 內彈窗始終出現在學生當前視野中央；且彈窗右上角必備醒目的「✕ 關閉視窗」按鈕。
 
 ---
 

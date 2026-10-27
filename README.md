@@ -17,6 +17,8 @@ https://github.com/hsinyuchi/english-song-interactive-worksheet
 
 AI 將自動下載並安裝本 Skill 至您的系統技能庫中。
 
+安裝完成後，輸入 `/sylvia-song` 即可一鍵叫出工作流！
+
 ---
 
 ## ✨ 核心特色與教學亮點 (Key Features)

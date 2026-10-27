@@ -1,5 +1,6 @@
 ﻿---
-name: hsinyuchi-english-song
+name: sylvia-song
+aliases: [english-song-interactive-worksheet, hsinyuchi-english-song]
 version: 4.1.0
 author: hsinyuchi (Sylvia)
 license: CC BY-NC-SA 4.0
